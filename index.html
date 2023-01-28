@@ -2,44 +2,105 @@
 <html>
   <head>
     <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp, auth } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
-    import "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyDkbBkdcgr6vu1f99vz7MfUc4H47Jk4fHw",
-      authDomain: "devconnect-7b4c1.firebaseapp.com",
-      projectId: "devconnect-7b4c1",
-      storageBucket: "devconnect-7b4c1.appspot.com",
-      messagingSenderId: "632316144630",
-      appId: "1:632316144630:web:088866cc03f7f5a528f5d7",
-      measurementId: "G-512LZ5ZXB2"
-    };
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = app.auth();
-    let email = document.querySelector("#email");
-    let password = document.querySelector("#password");
-    let confirmPassword = document.querySelector("#confirm-password");
-    let submitBtn = document.querySelector("input[type='submit']");
-    submitBtn.addEventListener("click", e => {
-      e.preventDefault();
-      if (password.value === confirmPassword.value) {
-        auth.createUserWithEmailAndPassword(email.value, password.value)
-          .then(() => {
-            console.log("Account created!");
-          })
-          .catch(error => {
-            console.error(error.message);
-          });
-      } else {
-        console.error("Passwords do not match.");
-      }
-    });
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+      import { auth } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-analytics.js";
+      
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDkbBkdcgr6vu1f99vz7MfUc4H47Jk4fHw",
+        authDomain: "devconnect-7b4c1.firebaseapp.com",
+        projectId: "devconnect-7b4c1",
+        storageBucket: "devconnect-7b4c1.appspot.com",
+        messagingSenderId: "632316144630",
+        appId: "1:632316144630:web:088866cc03f7f5a528f5d7",
+        measurementId: "G-512LZ5ZXB2"
+      };
+      
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const auth = auth(app);
+
+      // Get the form and inputs
+      const form = document.querySelector('form');
+      const emailInput = document.querySelector('#email');
+      const passwordInput = document.querySelector('#password');
+      const confirmPasswordInput = document.querySelector('#confirm-password');
+      
+      // Add a submit event listener to the form
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        // Get the values from the inputs
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        
+        // Check that the passwords match
+        if (password !== confirmPassword) {
+          alert('Passwords do not match');
+          return;
+        }
+        
+        // Sign up the user with their email and password
+        try {
+          const { user } = await auth.createUserWithEmailAndPassword(email, password);
+          analytics.logEvent('sign_up', { email });
+          alert('Successfully signed up!');
+        } catch (error) {
+          alert(error.message);
+        }
+      });
     </script>
+
     <title>Sign Up</title>
     <style>
-      /* your styles here */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      form {
+        margin: 50px auto;
+        width: 300px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+						
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      input[type="submit"] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #45a049;
+      }
+      
     </style>
   </head>
   <body>
