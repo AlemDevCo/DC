@@ -5,12 +5,13 @@
       // Import the functions you need from the SDKs you need
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
       import { auth } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-analytics.js";
+      //import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-analytics.js";
       
       // Your web app's Firebase configuration
       const firebaseConfig = {
         apiKey: "AIzaSyDkbBkdcgr6vu1f99vz7MfUc4H47Jk4fHw",
         authDomain: "devconnect-7b4c1.firebaseapp.com",
+        databaseURL: "https://devconnect-7b4c1.firebaseio.com",
         projectId: "devconnect-7b4c1",
         storageBucket: "devconnect-7b4c1.appspot.com",
         messagingSenderId: "632316144630",
@@ -20,15 +21,15 @@
       
       // Initialize Firebase
       const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-      const auth = auth(app);
+      //const analytics = getAnalytics(app);
+      const firebaseAuth = auth(app);
 
       // Get the form and inputs
       const form = document.querySelector('form');
       const emailInput = document.querySelector('#email');
       const passwordInput = document.querySelector('#password');
       const confirmPasswordInput = document.querySelector('#confirm-password');
-      
+  
       // Add a submit event listener to the form
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
